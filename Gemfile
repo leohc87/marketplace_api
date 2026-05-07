@@ -8,7 +8,6 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
-
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -36,8 +35,16 @@ gem "image_processing", "~> 1.2"
 # gem "rack-cors"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "ffaker", "~> 2.21"
+  gem "rspec-rails", "~> 6.0.0", ">=6.0.3"
+  gem "rswag-specs", "~> 2.10", ">= 2.10.1"
+  gem "rubocop", "~> 1.54", ">= 1.54.2"
+end
+
+group :test do
+  gem "simplecov", "~> 0.22", require: false
+end
 
   # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
   gem "bundler-audit", require: false
@@ -47,4 +54,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-end
+
+
+gem "rswag-ui", "~> 2.17"
+
+gem "rswag-api", "~> 2.17"
