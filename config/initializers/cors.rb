@@ -1,11 +1,13 @@
-require "rack/cors"
+# frozen_string_literal: true
+
+require 'rack/cors'
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "api.lvh.me"
+    origins 'api.lvh.me'
 
-    resource "*",
+    resource '*',
              headers: :any,
-             methods: [:get, :post, :put, :patch, :delete, :options, :head]
+             methods: %i[get post put patch delete options head]
   end
 end

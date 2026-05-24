@@ -1,10 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  it "cria um produto válido" do
+  it 'cria um produto válido' do
     product = Product.new(
-      name: "Produto teste",
-      description: "Descrição do produto",
+      name: 'Produto teste',
+      description: 'Descrição do produto',
       price: 99.90
     )
 

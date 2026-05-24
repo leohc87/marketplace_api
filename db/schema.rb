@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,15 +12,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_07_133639) do
+ActiveRecord::Schema[8.1].define(version: 20_260_507_133_639) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
+  enable_extension 'pg_catalog.plpgsql'
 
-  create_table "products", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.text "description"
-    t.string "name"
-    t.decimal "price"
-    t.datetime "updated_at", null: false
+  create_table 'products', force: :cascade do |t|
+    t.datetime 'created_at', null: false
+    t.text 'description'
+    t.string 'name'
+    t.decimal 'price'
+    t.datetime 'updated_at', null: false
   end
 end
