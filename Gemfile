@@ -41,7 +41,7 @@ group :development, :test do
   gem 'pry-rails', '~> 0.3.9'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'ffaker', '~> 2.21'
-  gem 'rspec-rails', '~> 6.0.0', '>=6.0.3'
+  gem 'rspec-rails', '~> 8.0.4'
   gem 'rswag-specs', '~> 2.10', '>= 2.10.1'
   gem 'rubocop', '~> 1.54', '>= 1.54.2', require: false
 end
