@@ -38,6 +38,7 @@ gem 'rack-cors', '~> 3.0'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'pry-rails', '~> 0.3.9'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'ffaker', '~> 2.21'
   gem 'rspec-rails', '~> 6.0.0', '>=6.0.3'
