@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   constraints subdomain: 'api' do
     namespace :api, defaults: { format: :json }, path: '/' do
-      scope module: :v1 do
+      scope module: :v1,
+            constraints: ApiConstraints.new(version: 1, default: true) do
         # suas rotas aqui
       end
     end
