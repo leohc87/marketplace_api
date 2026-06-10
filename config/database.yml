@@ -8,9 +8,21 @@ default: &default
   pool: 5
 
 development:
-  <<: *default
+  development:
+  adapter: postgresql
+  encoding: unicode
   database: marketplace_api_development
+  username: postgres
+  password: 5521
+  host: 127.0.0.1
+  port: 5432
 
 test:
-  <<: *default
+  test:
+  adapter: postgresql
+  encoding: unicode
   database: marketplace_api_test
+  username: postgres
+  password: 5521
+  host: 127.0.0.1
+  port: 5432

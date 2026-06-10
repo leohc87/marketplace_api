@@ -39,6 +39,8 @@ gem 'rack-cors', '~> 3.0'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'fiddle'
+  gem 'reline'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'ffaker', '~> 2.21'
   gem 'pry-rails', '~> 0.3.9'
@@ -48,7 +50,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'simplecov', '~> 0.22', require: false
+  gem 'shoulda-matchers', '~> 7.0'
+  gem 'simplecov', '~> 0.22', require: false  
 end
 
 # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
@@ -64,3 +67,5 @@ gem 'rubocop-rails-omakase', require: false
 gem 'rswag-ui', '~> 2.17'
 
 gem 'rswag-api', '~> 2.17'
+
+gem "solargraph", "~> 0.59.2", group: :development
