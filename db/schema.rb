@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-ActiveRecord::Schema[8.1].define(version: 2026_05_28_173759) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_28_173759) do #esquema do db
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
