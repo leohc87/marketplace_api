@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_secure_password
-
-  validates :email, presence: true
-  validates :password_digest, presence: true
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 end
