@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :api, defaults: { format: :json }, path: '/' do
       scope module: :v1,
             constraints: ApiConstraints.new(version: 1, default: true) do
-        # suas rotas aqui
+        resources :users, only: %i[index show create]
       end
     end
   end
