@@ -1,3 +1,5 @@
+﻿# frozen_string_literal: true
+
 class ApiConstraints
   attr_accessor :version, :default
 
@@ -7,6 +9,6 @@ class ApiConstraints
   end
 
   def matches?(req)
-  @default || req.headers[:Accept]&.include?("application/vnd.marketplace.v#{@version}")
-end
+    @default || req.headers[:Accept]&.include?("application/vnd.marketplace.v#{@version}")
+  end
 end
