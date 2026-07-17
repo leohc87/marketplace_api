@@ -1,28 +1,20 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: 127.0.0.1
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST") { "db" } %>
   port: 5432
-  username: leohc
-  password: "5521"
-  pool: 5
+  username: <%= ENV.fetch("DB_USER") { "postgres" } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { "postgres" } %>
 
 development:
-  development:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: marketplace_api_development
-  username: postgres
-  password: 5521
-  host: 127.0.0.1
-  port: 5432
 
 test:
-  test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: marketplace_api_test
-  username: postgres
-  password: 5521
-  host: 127.0.0.1
-  port: 5432
+
+production:
+  <<: *default
+  database: marketplace_api_production
