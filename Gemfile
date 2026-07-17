@@ -11,7 +11,7 @@ gem 'puma', '>= 5.0'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+gem 'bcrypt', '~> 3.1.7'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
@@ -34,16 +34,16 @@ gem 'thruster', require: false
 gem 'image_processing', '~> 1.2'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
-gem 'rack-cors', '~> 3.0'
 gem 'devise', '~> 4.9', '>= 4.9.3'
+gem 'rack-cors', '~> 3.0'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
-  gem 'fiddle'
-  gem 'reline'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'ffaker', '~> 2.21'
+  gem 'fiddle'
   gem 'pry-rails', '~> 0.3.9'
+  gem 'reline'
   gem 'rspec-rails', '~> 6.0.0', '>=6.0.3'
   gem 'rswag-specs', '~> 2.10', '>= 2.10.1'
   gem 'rubocop', '~> 1.54', '>= 1.54.2', require: false
@@ -63,9 +63,8 @@ gem 'brakeman', require: false
 # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
 gem 'rubocop-rails-omakase', require: false
 
-
 gem 'rswag-ui', '~> 2.17'
 
 gem 'rswag-api', '~> 2.17'
 
-gem "solargraph", "~> 0.59.2", group: :development
+gem 'solargraph', '~> 0.59.2', group: :development

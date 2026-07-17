@@ -1,4 +1,4 @@
-﻿# frozen_string_literal: true
+# frozen_string_literal: true
 
 require 'rails_helper'
 
@@ -8,7 +8,8 @@ describe ApiConstraints do
 
   describe 'matches?' do
     it "returns true when the version matches the 'Accept' header" do
-      request = double(host: 'api.lvh.me', headers: { 'Accept': 'application/vnd.marketplace.v1' })
+      request = double(host: 'api.lvh.me',
+                       headers: { 'Accept' => 'application/vnd.marketplace.v1' })
       expect(api_constraints_v1.matches?(request)).to be_truthy
     end
 

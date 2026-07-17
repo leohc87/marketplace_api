@@ -1,4 +1,5 @@
 AllCops:
+  NewCops: enable
   SuggestExtensions: false
   Exclude:
     - "db/schema.rb"
@@ -8,6 +9,7 @@ AllCops:
     - "db/seeds.rb"
     - "config/initializers/rswag-api.rb"
     - "config/initializers/rswag-ui.rb"
+    - "config/initializers/devise.rb"
 
 Style/Documentation:
   Enabled: false
