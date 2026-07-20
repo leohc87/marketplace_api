@@ -50,7 +50,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 7.0'
+  gem 'shoulda-matchers', '~> 8.0'
   gem 'simplecov', '~> 0.22', require: false
 end
 
