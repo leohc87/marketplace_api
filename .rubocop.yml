@@ -10,6 +10,7 @@ AllCops:
     - "config/initializers/rswag-api.rb"
     - "config/initializers/rswag-ui.rb"
     - "config/initializers/devise.rb"
+    - spec/**/*.rb
 
 Style/Documentation:
   Enabled: false
