@@ -10,10 +10,14 @@ AllCops:
     - "config/initializers/rswag-api.rb"
     - "config/initializers/rswag-ui.rb"
     - "config/initializers/devise.rb"
-    - spec/**/*.rb
+    - "spec/**/*"
 
 Style/Documentation:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
 
 Layout/EndOfLine:
   Enabled: false

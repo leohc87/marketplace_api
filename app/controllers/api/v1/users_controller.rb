@@ -12,9 +12,19 @@ module Api
         user = User.create(user_params)
 
         if user.save
-          render json: user, status: 201, location: [:api, user]
+          render json: user, status: :created, location: [:api, user]
         else
-          render json: { errors: user.errors }, status: 422
+          render json: { errors: user.errors }, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        user = User.find(params[:id])
+
+        if user.update(user_params)
+          render json: user, status: :ok, location: [:api, user]
+        else
+          render json: { errors: user.errors }, status: :unprocessable_entity
         end
       end
 
