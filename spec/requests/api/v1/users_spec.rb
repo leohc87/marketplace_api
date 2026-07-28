@@ -3,20 +3,26 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Users', type: :request do
-  let(:headers) { { 'Accept' => 'application/vnd.marketplace.v1' } }
+  let(:headers) do
+    {
+      'Accept' => 'application/vnd.marketplace.v1,application/json',
+      'Content-Type' => 'application/json'
+    }
+  end
 
   before(:each) do
     host! 'api.example.com'
   end
 
-  describe 'GET /users/:id' do
+  describe 'GET /show' do
     before(:each) do
       @user = FactoryBot.create(:user)
       get api_user_path(@user), headers: headers
     end
 
     it 'returns the information about a report on a hash' do
-      expect(json_response[:email]).to eq @user.email
+      user_response = json_response
+      expect(user_response[:email]).to eq @user.email
     end
 
     it { expect(response).to have_http_status(:ok) }
@@ -26,11 +32,12 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context 'when the user is successfully created' do
       before(:each) do
         @user_attributes = FactoryBot.attributes_for(:user)
-        post api_users_path, params: { user: @user_attributes }, headers: headers
+        post api_users_path, params: { user: @user_attributes }.to_json, headers: headers
       end
 
       it 'renders the json representation for the user record just created' do
-        expect(json_response[:email]).to eq @user_attributes[:email]
+        user_response = json_response
+        expect(user_response[:email]).to eq @user_attributes[:email]
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -42,7 +49,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
           password: '12345678',
           password_confirmation: '12345678'
         }
-        post api_users_path, params: { user: @invalid_user_attributes }, headers: headers
+        post api_users_path, params: { user: @invalid_user_attributes }.to_json, headers: headers
       end
 
       it 'renders an errors json' do
@@ -61,7 +68,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context 'when is successfully updated' do
       before(:each) do
         @user = FactoryBot.create(:user)
-        patch api_user_path(@user), params: { user: { email: 'newemail@example.com' } }, headers: headers
+        patch api_user_path(@user), params: { user: { email: 'newemail@example.com' } }.to_json, headers: headers
       end
 
       it 'updates the user email' do
@@ -79,7 +86,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context 'when is not updated' do
       before(:each) do
         @user = FactoryBot.create(:user)
-        patch api_user_path(@user), params: { user: { email: 'bademail.com' } }, headers: headers
+        patch api_user_path(@user), params: { user: { email: 'bademail.com' } }.to_json, headers: headers
       end
 
       it 'renders an errors json' do

@@ -30,5 +30,7 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
 
+  config.include Request::JsonHelpers, type: :controller
+
   config.include Request::JsonHelpers, type: :request
 end
