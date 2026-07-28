@@ -3,17 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Users', type: :request do
-  let(:headers) do
-    {
-      'Accept' => 'application/vnd.marketplace.v1,application/json',
-      'Content-Type' => 'application/json'
-    }
-  end
-
-  before(:each) do
-    host! 'api.example.com'
-  end
-
   describe 'GET /show' do
     before(:each) do
       @user = FactoryBot.create(:user)

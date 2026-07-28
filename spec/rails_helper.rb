@@ -30,7 +30,13 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
 
-  config.include Request::JsonHelpers, type: :controller
-
   config.include Request::JsonHelpers, type: :request
+
+  config.include Request::HeadersHelpers, type: :request
+
+  # As rotas da API exigem o subdominio `api` (constraints: { subdomain: 'api' }).
+  # Sem isso nenhuma rota casa e os specs quebram com erro de roteamento.
+  config.before(:each, type: :request) do
+    host! 'api.example.com'
+  end
 end
