@@ -3,10 +3,10 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   # Padrao pensado para quem roda fora do Docker: o container `db` publica a
-  # porta 5433 no host. Dentro do compose o servico `web` sobrescreve com
+  # porta 5434 no host. Dentro do compose o servico `web` sobrescreve com
   # DB_HOST=db e DB_PORT=5432.
   host: <%= ENV.fetch("DB_HOST") { "127.0.0.1" } %>
-  port: <%= ENV.fetch("DB_PORT") { 5433 } %>
+  port: <%= ENV.fetch("DB_PORT") { 5434 } %>
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "postgres" } %>
 

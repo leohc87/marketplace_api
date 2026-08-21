@@ -9,7 +9,10 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
+  # registrations e pulado: o cadastro passa por Api::V1::UsersController#create.
+  # O registrations#create do Devise chama sign_in, que levanta
+  # DisabledSessionError sob config.api_only depois de ja ter gravado o registro.
+  devise_for :users, skip: [:registrations]
   mount Rswag::Api::Engine => '/api-docs'
   mount Rswag::Ui::Engine => '/api-docs'
 end

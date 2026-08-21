@@ -6,9 +6,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: marketplace_api_development
     ports:
-      # 5433 no host para nao colidir com um PostgreSQL instalado nativamente.
+      # 5434 no host para nao colidir com um PostgreSQL instalado nativamente.
       # Dentro da rede do compose o acesso continua sendo db:5432.
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -17,7 +17,7 @@ services:
     build: .
     command: bundle exec rails server -b 0.0.0.0 -p 3000
     ports:
-      - "3000:3000"
+      - "8080:3000"
     environment:
       RAILS_ENV: development
       DB_HOST: db
