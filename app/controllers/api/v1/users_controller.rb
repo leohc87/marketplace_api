@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class UsersController < ApplicationController
@@ -26,6 +27,13 @@ module Api
         else
           render json: { errors: user.errors }, status: :unprocessable_entity
         end
+      end
+
+      def destroy
+        user = User.find(params[:id])
+        user.destroy
+
+        head :no_content
       end
 
       private
