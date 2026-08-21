@@ -1,222 +1,105 @@
 # frozen_string_literal: true
 
-require 'swagger_helper'
+require 'rails_helper'
 
-RSpec.describe 'api/v1/users', type: :request do
-  # The routes are namespaced under constraints: { subdomain: 'api' },
-  # so every request has to carry the subdomain or it never reaches the controller.
-  before(:each) { host! 'api.lvh.me' }
+RSpec.describe 'Api::V1::Users', type: :request do
+  describe 'GET /show' do
+    before(:each) do
+      @user = FactoryBot.create(:user)
+      get api_user_path(@user), headers: headers
+    end
 
-  let(:user_body_schema) do
-    {
-      type: :object,
-      properties: {
-        user: {
-          type: :object,
-          properties: {
-            email: { type: :string, example: 'user@example.com' },
-            password: { type: :string, example: '123456' },
-            password_confirmation: { type: :string, example: '123456' }
-          }
+    it 'returns the information about a report on a hash' do
+      user_response = json_response
+      expect(user_response[:email]).to eq @user.email
+    end
+
+    it { expect(response).to have_http_status(:ok) }
+  end
+
+  describe 'POST /users' do
+    context 'when the user is successfully created' do
+      before(:each) do
+        @user_attributes = FactoryBot.attributes_for(:user)
+        post api_users_path, params: { user: @user_attributes }.to_json, headers: headers
+      end
+
+      it 'renders the json representation for the user record just created' do
+        user_response = json_response
+        expect(user_response[:email]).to eq @user_attributes[:email]
+      end
+
+      it { expect(response).to have_http_status(:created) }
+    end
+
+    context 'when is not created' do
+      before(:each) do
+        @invalid_user_attributes = {
+          password: '12345678',
+          password_confirmation: '12345678'
         }
-      },
-      required: %w[user]
-    }
-  end
-
-  path '/users' do
-    post('create user') do
-      tags 'Users'
-      consumes 'application/json'
-      produces 'application/json'
-      parameter name: :user, in: :body, schema: {
-        type: :object,
-        properties: {
-          user: {
-            type: :object,
-            properties: {
-              email: { type: :string, example: 'user@example.com' },
-              password: { type: :string, example: '123456' },
-              password_confirmation: { type: :string, example: '123456' }
-            },
-            required: %w[email password password_confirmation]
-          }
-        },
-        required: %w[user]
-      }
-
-      response(201, 'created') do
-        let(:attributes) { FactoryBot.attributes_for(:user) }
-        let(:user) { { user: attributes } }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test! do
-          user_response = JSON.parse(response.body, symbolize_names: true)
-          expect(user_response[:email]).to eq attributes[:email]
-          expect(User.find_by(email: attributes[:email])).to be_present
-        end
+        post api_users_path, params: { user: @invalid_user_attributes }.to_json, headers: headers
       end
 
-      response(422, 'unprocessable entity') do
-        let(:user) { { user: { password: '123456', password_confirmation: '123456' } } }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test! do
-          user_response = JSON.parse(response.body, symbolize_names: true)
-          expect(user_response[:errors][:email]).to include "can't be blank"
-        end
+      it 'renders an errors json' do
+        expect(json_response).to have_key(:errors)
       end
+
+      it 'renders the json errors on why the user could not be created' do
+        expect(json_response[:errors][:email]).to include "can't be blank"
+      end
+
+      it { expect(response).to have_http_status(:unprocessable_content) }
     end
   end
 
-  path '/users/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
-    get('show user') do
-      tags 'Users'
-      produces 'application/json'
-
-      response(200, 'successful') do
-        let(:existing_user) { FactoryBot.create(:user) }
-        let(:id) { existing_user.id }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test! do
-          user_response = JSON.parse(response.body, symbolize_names: true)
-          expect(user_response[:email]).to eq existing_user.email
-        end
+  describe 'PUT/PATCH /users/:id' do
+    context 'when is successfully updated' do
+      before(:each) do
+        @user = FactoryBot.create(:user)
+        patch api_user_path(@user), params: { user: { email: 'newemail@example.com' } }.to_json, headers: headers
       end
 
-      response(404, 'not found') do
-        let(:id) { 0 }
-        run_test!
+      it 'updates the user email' do
+        @user.reload
+        expect(@user.email).to eq 'newemail@example.com'
       end
+
+      it 'renders the json representation for the updated user' do
+        expect(json_response[:email]).to eq 'newemail@example.com'
+      end
+
+      it { expect(response).to have_http_status(:ok) }
     end
 
-    patch('update user') do
-      tags 'Users'
-      consumes 'application/json'
-      produces 'application/json'
-      parameter name: :user, in: :body, schema: {
-        type: :object,
-        properties: {
-          user: {
-            type: :object,
-            properties: {
-              email: { type: :string, example: 'user@example.com' },
-              password: { type: :string, example: '123456' },
-              password_confirmation: { type: :string, example: '123456' }
-            }
-          }
-        },
-        required: %w[user]
-      }
-
-      response(200, 'successful') do
-        let(:existing_user) { FactoryBot.create(:user) }
-        let(:id) { existing_user.id }
-        let(:user) { { user: { email: 'updated@example.com' } } }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test! do
-          expect(existing_user.reload.email).to eq 'updated@example.com'
-        end
+    context 'when is not updated' do
+      before(:each) do
+        @user = FactoryBot.create(:user)
+        patch api_user_path(@user), params: { user: { email: 'bademail.com' } }.to_json, headers: headers
       end
 
-      response(422, 'unprocessable entity') do
-        let(:existing_user) { FactoryBot.create(:user) }
-        let(:id) { existing_user.id }
-        let(:user) { { user: { email: 'bademail.com' } } }
-
-        run_test! do
-          user_response = JSON.parse(response.body, symbolize_names: true)
-          expect(user_response[:errors][:email]).to include 'is invalid'
-        end
+      it 'renders an errors json' do
+        expect(json_response).to have_key(:errors)
       end
+
+      it 'renders the json errors on why the user could not be updated' do
+        expect(json_response[:errors][:email]).to include 'is invalid'
+      end
+
+      it { expect(response).to have_http_status(:unprocessable_content) }
+    end
+  end
+
+  describe 'DELETE /users/:id' do
+    before(:each) do
+      @user = FactoryBot.create(:user)
+      delete api_user_path(@user), headers: headers
     end
 
-    put('update user') do
-      tags 'Users'
-      consumes 'application/json'
-      produces 'application/json'
-      parameter name: :user, in: :body, schema: {
-        type: :object,
-        properties: {
-          user: {
-            type: :object,
-            properties: {
-              email: { type: :string, example: 'user@example.com' },
-              password: { type: :string, example: '123456' },
-              password_confirmation: { type: :string, example: '123456' }
-            }
-          }
-        },
-        required: %w[user]
-      }
-
-      response(200, 'successful') do
-        let(:existing_user) { FactoryBot.create(:user) }
-        let(:id) { existing_user.id }
-        let(:user) { { user: { email: 'replaced@example.com' } } }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
-        run_test! do
-          expect(existing_user.reload.email).to eq 'replaced@example.com'
-        end
-      end
+    it 'deletes the user' do
+      expect(User.find_by(id: @user.id)).to be_nil
     end
 
-    delete('delete user') do
-      tags 'Users'
-
-      response(204, 'no content') do
-        let(:existing_user) { FactoryBot.create(:user) }
-        let(:id) { existing_user.id }
-
-        run_test! do
-          expect(User.exists?(existing_user.id)).to be false
-        end
-      end
-
-      response(404, 'not found') do
-        let(:id) { 0 }
-        run_test!
-      end
-    end
+    it { expect(response).to have_http_status(:no_content) }
   end
 end

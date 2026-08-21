@@ -15,7 +15,7 @@ module Api
         if user.save
           render json: user, status: :created, location: [:api, user]
         else
-          render json: { errors: user.errors }, status: :unprocessable_entity
+          render json: { errors: user.errors }, status: :unprocessable_content
         end
       end
 
@@ -25,14 +25,13 @@ module Api
         if user.update(user_params)
           render json: user, status: :ok, location: [:api, user]
         else
-          render json: { errors: user.errors }, status: :unprocessable_entity
+          render json: { errors: user.errors }, status: :unprocessable_content
         end
       end
 
       def destroy
         user = User.find(params[:id])
         user.destroy
-
         head :no_content
       end
 
