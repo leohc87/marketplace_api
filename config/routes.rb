@@ -12,5 +12,8 @@ Rails.application.routes.draw do # rubocop:disable Lint/Syntax
     end
   end
 
-  devise_for :users # rubocop:disable Lint/Syntax
+  # Registrations are skipped: signing up goes through Api::V1::UsersController#create.
+  # Devise's own registrations#create calls sign_in, which raises
+  # DisabledSessionError under config.api_only after already committing the record.
+  devise_for :users, skip: [:registrations] # rubocop:disable Lint/Syntax
 end
